@@ -7,6 +7,7 @@ const API = "http://localhost:6001/listings"
 function App() {
 
   const [listings, setListings] = useState([])
+  const [search, setSearch] = useState("")
 
   useEffect(()=> {
     fetch(API)
@@ -14,10 +15,21 @@ function App() {
     .then(data => setListings(data))
   }, [])
 
+  const filteredListings = listings.filter((listing) => {
+    return listing.description.toLowerCase().includes(search.toLowerCase())
+  })
+
+  function handleDeleteCard(id) {
+  const updatedListingsArray = listings.filter((listing) => listing.id !== id)
+    setListings(updatedListingsArray)
+  }
+
   return (
     <div className="app">
-      <Header />
-      <ListingsContainer listings={listings} />
+      <Header handleSearch = {setSearch}/>
+      <ListingsContainer 
+        listings={filteredListings} 
+        handleDeleteCard={handleDeleteCard}/>
     </div>
   );
 }
