@@ -1,37 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ListingCard from "./ListingCard";
 
-function ListingsContainer({ search }) {
-
-  const [listings, setListings] = useState([])
-
-  useEffect(() => {
-    fetch('http://localhost:6001/listings')
-    .then(response => response.json())
-    .then(listings => setListings(listings))
-  }, [])
-
-  function handleDeleteListing(id) {
-    const updatedListingsArray = listings.filter(listing => listing.id !== id)
-    setListings(updatedListingsArray)
-  }
-
-  const filteredListings = listings.filter(listing => {
-    return listing.description.toLowerCase().includes(search)
-  })
-
-  const listingCards = filteredListings.map((singleListing) => {
-    return <ListingCard 
-      key={singleListing.id} 
-      listing={singleListing}
-      onDeleteListing={handleDeleteListing}
-    />
-  })
+function ListingsContainer({ listings }) {
+  
 
   return (
     <main>
       <ul className="cards">
-        {listingCards}
+        {listings.map((listing) => 
+          <ListingCard key={listing.id} listing={listing}
+        />)}
       </ul>
     </main>
   );

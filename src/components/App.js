@@ -1,19 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import ListingsContainer from "./ListingsContainer";
 
+const API = "http://localhost:6001/listings"
+
 function App() {
 
-  const [search, setSearch] = useState("")
+  const [listings, setListings] = useState([])
 
-  function handleSearch(newSearch) {
-    setSearch(newSearch)
-  }
+  useEffect(()=> {
+    fetch(API)
+    .then(response => response.json())
+    .then(data => setListings(data))
+  }, [])
 
   return (
     <div className="app">
-      <Header onSearch={handleSearch}/>
-      <ListingsContainer search={search} />
+      <Header />
+      <ListingsContainer listings={listings} />
     </div>
   );
 }
